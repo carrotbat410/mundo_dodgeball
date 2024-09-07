@@ -13,6 +13,8 @@ func main() {
 	// MongoDB 연결
 	database.ConnectMongo()
 
+	// 테스트
+
 	// Fiber 인스턴스 생성
 	app := fiber.New()
 
