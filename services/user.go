@@ -7,6 +7,8 @@ import (
 
 	"fiber_prac/database"
 	"fiber_prac/models"
+	"fiber_prac/utils"
+
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -30,6 +32,8 @@ func RegisterUser(user models.User) error {
 	}
 
 	// 유저 데이터 삽입
+	user.CreatedAt = utils.GetCurrentKoreaTime()
+
 	_, err = database.UserCollection.InsertOne(ctx, user)
 	if err != nil {
 		return errors.New("Failed to register user")
