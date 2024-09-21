@@ -3,6 +3,7 @@ package controllers
 import (
 	"fiber_prac/models"
 	"fiber_prac/services"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -40,3 +41,26 @@ func RegisterUser(c *fiber.Ctx) error {
 // app.Get("/sample/error", func(c *fiber.Ctx) error {
 // 	return fiber.NewError(782, "Custom Error Message")
 // })
+
+func Login(c *fiber.Ctx) error {
+	fmt.Println("로그인 컨트롤러 들어옴")
+
+	var input models.LoginInput
+
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Invalid input",
+		})
+	}
+
+	// validation
+	if input.Email == "" || input.Password == "" {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "Bad Request",
+		})
+	}
+
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"message": "ok",
+	})
+}

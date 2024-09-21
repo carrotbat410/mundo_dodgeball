@@ -11,8 +11,8 @@ func AuthRoutes(app *fiber.App) {
 	// /auth 그룹 생성
 	authGroup := app.Group("/auth")
 
-	// /auth/register 경로 정의
 	authGroup.Post("/register", controllers.RegisterUser)
+	authGroup.Post("/login", controllers.Login)
 }
 
 // // 라우트 설정 함수
