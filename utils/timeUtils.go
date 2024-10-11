@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"time"
 )
 
@@ -17,9 +16,8 @@ func GetCurrentKoreaTime() time.Time {
 	// return time.Now().In(location)
 
 	now := time.Now()
-	fmt.Println("now:", now)
 
 	koreaTime := now.Add(9 * time.Hour)
-	fmt.Println("koreaTime:", koreaTime)
+
 	return koreaTime
 }
