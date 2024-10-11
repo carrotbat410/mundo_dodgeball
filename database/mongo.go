@@ -13,6 +13,7 @@ import (
 
 // MongoDB User 컬렉션 참조 변수
 var UserCollection *mongo.Collection
+var BoardCollection *mongo.Collection
 
 // MongoDB 연결 설정
 func ConnectMongo() {
@@ -42,5 +43,7 @@ func ConnectMongo() {
 
 	// User 컬렉션 선택
 	UserCollection = client.Database("fiberdb").Collection("users")
+	BoardCollection = client.Database("fiberdb").Collection("boards")
+
 	log.Println("Connected to MongoDB!")
 }
