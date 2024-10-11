@@ -9,8 +9,8 @@ import (
 func BoardRoutes(app *fiber.App) {
 	group := app.Group("/board")
 
-	// group.Get("/boards", controllers.GetBaords)
-	group.Post("/boards", controllers.CreateBoard)
+	// group.Get("/", controllers.GetBaords)
+	group.Post("/", controllers.CreateBoard)
 	// authGroup.Post("/register", controllers.RegisterUser)
 
 }
