@@ -41,9 +41,12 @@ func ConnectMongo() {
 		log.Fatal(err)
 	}
 
-	// User 컬렉션 선택
-	UserCollection = client.Database("fiberdb").Collection("users")
-	BoardCollection = client.Database("fiberdb").Collection("boards")
+	mongodb_name := os.Getenv("MONGODB_NAME")
+	if mongodb_name == "" {
+		mongodb_name = "mundo_dodgeball"
+	}
+	UserCollection = client.Database(mongodb_name).Collection("users")
+	BoardCollection = client.Database(mongodb_name).Collection("boards")
 
 	log.Println("Connected to MongoDB!")
 }
