@@ -3,33 +3,27 @@ package controllers
 import (
 	"fiber_prac/models"
 	"fiber_prac/services"
-	"fmt"
+	"fiber_prac/utils"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-// func GetBaords(c *fiber.Ctx) error {
-// 	// 요청 바디에서 유저 정보 파싱
-// 	var boards models.Board
-// 	if err := c.BodyParser(&user); err != nil {
-// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-// 			"error": "Invalid request body",
-// 		})
-// 	}
-
-// 	// 유저 등록 서비스 호출
-// 	err := services.RegisterUser(user)
-// 	if err != nil {
-// 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-// 			"error": err.Error(),
-// 		})
-// 	}
-
-// 	// 성공적으로 회원가입 완료
-// return c.Status(fiber.StatusCreated).JSON(fiber.Map{
-// 	"message": "User registered successfully",
-// })
+// func GetBoards(c *fiber.Ctx) error {
+// 	var boards []models.Board
 // }
+
+func GetBoards(c *fiber.Ctx) error {
+	// 서비스 계층에서 모든 게시글 가져오기
+	boards, err := services.GetBoards()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to fetch boards",
+		})
+	}
+
+	// 게시글 목록을 JSON으로 응답
+	return c.Status(fiber.StatusOK).JSON(boards)
+}
 
 func CreateBoard(c *fiber.Ctx) error {
 	var board models.Board
@@ -40,7 +34,8 @@ func CreateBoard(c *fiber.Ctx) error {
 		})
 	}
 
-	fmt.Println("board info:", board)
+	board.CreatedAt = utils.GetCurrentKoreaTime()
+	board.UpdatedAt = utils.GetCurrentKoreaTime()
 
 	if err := services.CreateBoard(board); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
