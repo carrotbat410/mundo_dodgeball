@@ -34,6 +34,8 @@ func CreateBoard(c *fiber.Ctx) error {
 		})
 	}
 
+	board.Username = c.Locals("username").(string)
+	board.Id = c.Locals("id").(string)
 	board.CreatedAt = utils.GetCurrentKoreaTime()
 	board.UpdatedAt = utils.GetCurrentKoreaTime()
 
