@@ -10,6 +10,8 @@ import (
 	"fiber_prac/utils"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // 유저 등록 서비스
@@ -35,7 +37,10 @@ func RegisterUser(user models.User) error {
 		return errors.New("username already exists")
 	}
 
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+
 	// 유저 데이터 삽입
+	user.Password = string(hashedPassword)
 	user.CreatedAt = utils.GetCurrentKoreaTime()
 
 	_, err := database.UserCollection.InsertOne(ctx, user)
@@ -44,4 +49,28 @@ func RegisterUser(user models.User) error {
 	}
 
 	return nil
+}
+
+func Login(id string, password string) (models.User, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var findUser models.User
+
+	err := database.UserCollection.FindOne(ctx, bson.M{"id": id}).Decode(&findUser)
+
+	if err == mongo.ErrNoDocuments {
+		return findUser, errors.New("User not found")
+	} else if err != nil {
+		// 다른 오류 처리
+		// return findUser, err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(findUser.Password), []byte(password))
+	if err != nil {
+		return findUser, errors.New("User not found")
+	}
+
+	return findUser, nil
 }

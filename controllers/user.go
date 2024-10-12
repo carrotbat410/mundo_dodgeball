@@ -3,7 +3,6 @@ package controllers
 import (
 	"fiber_prac/models"
 	"fiber_prac/services"
-	"fmt"
 	"os"
 	"time"
 
@@ -46,7 +45,6 @@ func RegisterUser(c *fiber.Ctx) error {
 // })
 
 func Login(c *fiber.Ctx) error {
-	fmt.Println("로그인 컨트롤러 들어옴")
 
 	var input models.LoginInput
 
@@ -63,7 +61,17 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := generateJWT(input.Id)
+	userData, loginErr := services.Login(input.Id, input.Password)
+
+	if loginErr != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": "User Not Found",
+			"error":   loginErr.Error(),
+		})
+	}
+
+	token, err := generateJWT(userData.Id, userData.Username)
+
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": "Failed to generate token",
@@ -77,11 +85,12 @@ func Login(c *fiber.Ctx) error {
 	})
 }
 
-func generateJWT(id string) (string, error) {
+func generateJWT(id, username string) (string, error) {
 	// JWT 클레임 설정 (서명된 데이터)
 	claims := jwt.MapClaims{
-		"id":  id,
-		"exp": time.Now().Add(time.Hour * 72).Unix(), // 유효 시간: 24시간 //TODO 개발단계니 72시간으로
+		"id":       id,
+		"username": username,
+		"exp":      time.Now().Add(time.Hour * 72).Unix(), // 유효 시간: 24시간 //TODO 개발단계니 72시간으로
 	}
 
 	// 비밀 키로 서명
