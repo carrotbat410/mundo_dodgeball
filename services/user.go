@@ -15,7 +15,7 @@ import (
 // 유저 등록 서비스
 func RegisterUser(user models.User) error {
 	// 유효성 검사
-	if user.Username == "" || user.Email == "" || user.Password == "" {
+	if user.Id == "" || user.Username == "" || user.Password == "" {
 		return errors.New("All fields are required")
 	}
 
@@ -23,7 +23,7 @@ func RegisterUser(user models.User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	count, err := database.UserCollection.CountDocuments(ctx, bson.M{"email": user.Email})
+	count, err := database.UserCollection.CountDocuments(ctx, bson.M{"id": user.Id})
 	if err != nil {
 		return errors.New("Database error")
 	}
