@@ -54,7 +54,7 @@ func Login(c *fiber.Ctx) error {
 	}
 
 	// validation
-	if input.Email == "" || input.Password == "" {
+	if input.Id == "" || input.Password == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Bad Request",
 		})

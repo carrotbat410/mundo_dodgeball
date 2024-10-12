@@ -1,6 +1,6 @@
 package models
 
 type LoginInput struct {
-	Email    string `json:"email" bson:"email"`
+	Id       string `json:"id" bson:"id"`
 	Password string `json:"password" bson:"password"`
 }
