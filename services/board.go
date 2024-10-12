@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log"
 	"time"
 
@@ -28,8 +27,6 @@ func GetBoards() ([]models.Board, error) {
 	// MongoDB에서 모든 게시글을 찾습니다.
 	// cursor, err := boardCollection.Find(ctx, bson.M{})
 	cursor, err := database.BoardCollection.Find(ctx, bson.M{})
-
-	fmt.Println("cursor:", cursor)
 
 	if err != nil {
 		log.Println("Error fetching boards from database:", err)
