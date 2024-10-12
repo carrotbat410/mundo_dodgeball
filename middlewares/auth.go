@@ -32,6 +32,16 @@ func AuthRequired(c *fiber.Ctx) error {
 		})
 	}
 
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		//AuthRequired 미들웨어에는 토큰을 복호화하여 id, username을 요청 컨텍스트에 저장한다.
+		c.Locals("id", claims["id"])
+		c.Locals("username", claims["username"])
+	} else {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"error": "Invalid token claims",
+		})
+	}
+
 	// 토큰이 유효하다면 다음 핸들러로 이동
 	return c.Next()
 }
