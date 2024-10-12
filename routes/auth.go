@@ -22,7 +22,6 @@ import (
 
 // AuthRoutes는 /auth 그룹 경로를 설정합니다.
 func AuthRoutes(app *fiber.App) {
-	// /auth 그룹 생성
 	authGroup := app.Group("/auth")
 
 	authGroup.Post("/register", controllers.RegisterUser)

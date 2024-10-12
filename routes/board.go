@@ -12,6 +12,4 @@ func BoardRoutes(app *fiber.App) {
 
 	group.Get("/", middlewares.AuthRequired, controllers.GetBoards)
 	group.Post("/", middlewares.AuthRequired, controllers.CreateBoard)
-	// authGroup.Post("/register", controllers.RegisterUser)
-
 }

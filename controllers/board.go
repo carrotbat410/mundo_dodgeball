@@ -8,10 +8,6 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-// func GetBoards(c *fiber.Ctx) error {
-// 	var boards []models.Board
-// }
-
 func GetBoards(c *fiber.Ctx) error {
 	// 서비스 계층에서 모든 게시글 가져오기
 	boards, err := services.GetBoards()
