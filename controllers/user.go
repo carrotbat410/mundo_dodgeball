@@ -4,8 +4,11 @@ import (
 	"fiber_prac/models"
 	"fiber_prac/services"
 	"fmt"
+	"os"
+	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt"
 )
 
 // 회원가입 핸들러 함수
@@ -60,11 +63,29 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
+	token, err := generateJWT(input.Id)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": "Failed to generate token",
+			"error":   err.Error(),
+		})
+	}
+
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"message": "ok",
+		"token":   token,
 	})
 }
 
-func generateJWT() {
+func generateJWT(id string) (string, error) {
+	// JWT 클레임 설정 (서명된 데이터)
+	claims := jwt.MapClaims{
+		"id":  id,
+		"exp": time.Now().Add(time.Hour * 72).Unix(), // 유효 시간: 24시간 //TODO 개발단계니 72시간으로
+	}
 
+	// 비밀 키로 서명
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	secret := os.Getenv("JWT_SECRET")
+	return token.SignedString([]byte(secret))
 }
