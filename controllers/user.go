@@ -64,3 +64,7 @@ func Login(c *fiber.Ctx) error {
 		"message": "ok",
 	})
 }
+
+func generateJWT() {
+
+}
