@@ -39,7 +39,7 @@ func main() {
 
 // 라우트 설정 함수
 func setupRoutes(app *fiber.App) {
-	// auth 관련 라우트 설정
 	routes.AuthRoutes(app)
 	routes.BoardRoutes(app)
+	routes.RoomRoutes(app)
 }

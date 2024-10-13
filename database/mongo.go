@@ -14,6 +14,7 @@ import (
 // MongoDB User 컬렉션 참조 변수
 var UserCollection *mongo.Collection
 var BoardCollection *mongo.Collection
+var RoomCollection *mongo.Collection
 
 // MongoDB 연결 설정
 func ConnectMongo() {
@@ -47,6 +48,7 @@ func ConnectMongo() {
 	}
 	UserCollection = client.Database(mongodb_name).Collection("users")
 	BoardCollection = client.Database(mongodb_name).Collection("boards")
+	RoomCollection = client.Database(mongodb_name).Collection("rooms")
 
 	log.Println("Connected to MongoDB!")
 }
