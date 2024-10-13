@@ -34,7 +34,7 @@ func RegisterUser(c *fiber.Ctx) error {
 	})
 }
 
-func Login(c *fiber.Ctx) error {
+func Login(c *fiber.Ctx) error { //TODO Redis + 세션 방식으로 수정하기(중복로그인, 비정상적으로 닫을떄(웹소켓이 끊어졌을떄 세션정보 삭제되도록))
 
 	var input models.LoginInput
 
